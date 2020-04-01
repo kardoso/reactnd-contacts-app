@@ -1,32 +1,36 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class ListContacts extends Component {
   static propTypes = {
     contacts: PropTypes.array.isRequired,
     onDeleteContact: PropTypes.func.isRequired
-  };
+  }
 
   state = {
-    query: ""
-  };
+    query: ''
+  }
 
   updateQuery = query => {
     this.setState(() => ({
       query: query.trim()
-    }));
-  };
+    }))
+  }
+
+  clearQuery = () => {
+    this.updateQuery('')
+  }
 
   render() {
-    const { query } = this.state;
-    const { contacts, onDeleteContact } = this.props;
+    const { query } = this.state
+    const { contacts, onDeleteContact } = this.props
 
     const showingContacts =
-      query === ""
+      query === ''
         ? contacts
         : contacts.filter(c =>
             c.name.toLowerCase().includes(query.toLowerCase())
-          );
+          )
 
     return (
       <div className="list-contacts">
@@ -38,6 +42,16 @@ class ListContacts extends Component {
             value={query}
             onChange={event => this.updateQuery(event.target.value)}
           />
+        </div>
+        <div>
+          {showingContacts.length !== contacts.length && (
+            <div className="showing-contacts">
+              <span>
+                Now showing {showingContacts.length} of {contacts.length}
+              </span>
+              <button onClick={this.clearQuery}>Show all</button>
+            </div>
+          )}
         </div>
         <ol className="contact-list">
           {showingContacts.map(contact => (
@@ -62,8 +76,8 @@ class ListContacts extends Component {
           ))}
         </ol>
       </div>
-    );
+    )
   }
 }
 
-export default ListContacts;
+export default ListContacts
